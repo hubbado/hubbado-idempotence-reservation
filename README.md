@@ -1,8 +1,6 @@
 # Idempotence
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/idempotence`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Idempotence reservation stream pattern for eventide toolkit.
 
 ## Installation
 
@@ -22,18 +20,34 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Use it inside a handler
 
-## Development
+```ruby
+class SomeHandler
+  dependency :reservation, Idempotence::Reservation
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+  def configure(session: nil)
+    Idempotence::Reservation.configure(self, session: session)
+  end
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+  handle SomeMessage do |some_message|
+    reservation.(some_message, :some_idempotence_key) do
+      # Handle reserved message
+    end
+  end
+end
+```
+
+`reservation` callable will check if the given message is reserved with metadata `reserved` and the process the 
+block given. If metadata `reserved` does not exist then will reserve the message using a [compound ID](http://docs.eventide-project.org/glossary.html#compound-id).
+
+E.g: Picks the message's stream name `someCategory:command-123` and the idempotence key `AAA` so the reserved message's stream name will be
+`someCategory:command-123+AAA`
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/idempotence.
+Bug reports and pull requests are welcome on GitHub at https://github.com/hubbado/idempotence.
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The `idempotence` library is released under the [MIT License](https://opensource.org/licenses/MIT).
