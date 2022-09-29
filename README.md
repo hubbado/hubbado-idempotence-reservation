@@ -7,7 +7,7 @@ Idempotence reservation stream pattern for eventide toolkit.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'idempotence'
+gem 'hubbado-idempotence'
 ```
 
 And then execute:
@@ -16,7 +16,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install idempotence
+    $ gem install hubbado-idempotence
 
 ## Usage
 
@@ -50,4 +50,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/hubbad
 
 ## License
 
-The `idempotence` library is released under the [MIT License](https://opensource.org/licenses/MIT).
+The `hubbado-idempotence` library is released under the [MIT License](https://opensource.org/licenses/MIT).
