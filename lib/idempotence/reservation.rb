@@ -1,6 +1,5 @@
 module Idempotence
   class Reservation
-    include Messaging::StreamName
     include Log::Dependency
 
     METADATA_NAME = :reserved
@@ -25,25 +24,40 @@ module Idempotence
     end
 
     def call(message, idempotence_key)
-      reserved_metadata = message.metadata.get_property(METADATA_NAME)
-
-      if reserved_metadata
-        yield
-        return
+      if reserved?(message)
+        yield(message)
+      else
+        duplicate_message(message, idempotence_key)
       end
+    end
 
+    private
+
+    def reserved?(message)
+      !!message.metadata.get_property(METADATA_NAME)
+    end
+
+    def duplicate_message(message, idempotence_key)
       reservation_message = message.class.follow(message)
       reservation_message.metadata.set_property(METADATA_NAME, message.id)
-      category, id = MessageStore::StreamName.split(message.metadata.stream_name)
+      origin_stream_name = message.metadata.stream_name
 
-      stream_name = MessageStore::StreamName.stream_name(category, [id, idempotence_key])
+      category = Messaging::StreamName.get_category(origin_stream_name)
+      origin_ids = Messaging::StreamName.get_ids(origin_stream_name)
+      types = Messaging::StreamName.get_types(origin_stream_name)
+
+      ids = origin_ids + [idempotence_key]
+
+      stream_name = MessageStore::StreamName.stream_name(category, ids: ids, types: types)
 
       result = Try.(MessageStore::ExpectedVersion::Error) do
         write.initial(reservation_message, stream_name)
       end
 
-      return if result
+      log_ignore(message, stream_name) unless result
+    end
 
+    def log_ignore(message, stream_name)
       logger.info(
         "#{message.class.name} #{message.metadata.global_position} ignored, output stream #{stream_name} exists",
         tags: %i[reservation ignored]
