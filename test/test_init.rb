@@ -8,8 +8,7 @@ puts "TEST_BENCH_DETAIL: #{ENV["TEST_BENCH_DETAIL"].inspect}"
 puts
 
 require_relative "../init"
-require "messaging/controls"
-require "message_store/controls"
+require "idempotence/controls"
 require "debug"
 
 require "test_bench"; TestBench.activate

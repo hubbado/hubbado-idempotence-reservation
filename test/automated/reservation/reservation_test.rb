@@ -4,10 +4,8 @@ context "Reservation" do
   idempotence_key = '123'
 
   context "When Reserved Metadata Name exists in the Message" do
-    metadata = Messaging::Controls::Metadata::Random.example
-    metadata.properties[Reservation::METADATA_NAME] = :a_value
-
-    message = Messaging::Controls::Message::New.example
+    metadata = Controls::Metadata::Reserved.example
+    message = Controls::Message::New.example
     message.metadata = metadata
 
     block_accessed = false
@@ -30,8 +28,8 @@ context "Reservation" do
   context "When Reserved Metadata does not exist in the Message" do
     original_stream_name = "someStream-987"
 
-    metadata = Messaging::Controls::Metadata::Random.example
-    message = Messaging::Controls::Message::New.example
+    metadata = Controls::Metadata::Random.example
+    message = Controls::Message::New.example
     metadata.stream_name = original_stream_name
     message.metadata = metadata
 
