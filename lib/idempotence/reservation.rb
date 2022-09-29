@@ -23,12 +23,36 @@ module Idempotence
       Messaging::Postgres::Write.configure(self, session: session)
     end
 
-    def call(message, idempotence_key)
+    def call(message, idempotence_key, &block)
+      logger.trace(
+        "Handling reservation idempotence for message #{message.class.name} #{message.metadata.global_position}",
+        tag: :reservation
+      )
+
       if reserved?(message)
-        yield(message)
+        handle_reserved_message(message, &block)
       else
-        duplicate_message(message, idempotence_key)
+        reserve_message(message, idempotence_key)
       end
+
+      logger.info(
+        "Handled reservation idempotence for #{message.class.name} #{message.metadata.global_position}",
+        tag: :reservation
+      )
+    end
+
+    def handle_reserved_message(message, &block)
+      logger.trace(
+        "Handling reserved message #{message.class.name} #{message.metadata.global_position}",
+        tag: :reservation
+      )
+
+      yield message
+
+      logger.info(
+        "Handled reserved message #{message.class.name} #{message.metadata.global_position}",
+        tag: :reservation
+      )
     end
 
     private
@@ -37,7 +61,12 @@ module Idempotence
       !!message.metadata.get_property(METADATA_NAME)
     end
 
-    def duplicate_message(message, idempotence_key)
+    def reserve_message(message, idempotence_key)
+      logger.trace(
+        "Reserving #{message.class.name} #{message.metadata.global_position}, Idempotence Key: #{idempotence_key}",
+        tag: :reservation
+      )
+
       reservation_message = message.class.follow(message)
       reservation_message.metadata.set_property(METADATA_NAME, message.id)
       origin_stream_name = message.metadata.stream_name
@@ -54,7 +83,14 @@ module Idempotence
         write.initial(reservation_message, stream_name)
       end
 
-      log_ignore(message, stream_name) unless result
+      if result
+        logger.info(
+          "Reserved #{message.class.name} #{message.metadata.global_position}, Idempotence Key: #{idempotence_key}",
+          tag: :reservation
+        )
+      else
+        log_ignore(message, stream_name)
+      end
     end
 
     def log_ignore(message, stream_name)
