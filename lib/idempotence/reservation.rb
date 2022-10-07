@@ -73,11 +73,10 @@ module Idempotence
 
       category = Messaging::StreamName.get_category(origin_stream_name)
       origin_ids = Messaging::StreamName.get_ids(origin_stream_name)
-      types = Messaging::StreamName.get_types(origin_stream_name)
 
       ids = origin_ids + [idempotence_key]
 
-      stream_name = MessageStore::StreamName.stream_name(category, ids: ids, types: types)
+      stream_name = MessageStore::StreamName.stream_name(category, ids)
 
       result = Try.(MessageStore::ExpectedVersion::Error) do
         write.initial(reservation_message, stream_name)
@@ -98,6 +97,32 @@ module Idempotence
         "#{message.class.name} #{message.metadata.global_position} ignored, output stream #{stream_name} exists",
         tags: %i[reservation ignored]
       )
+    end
+
+    module Substitute
+      def self.build
+        Reservation.new
+      end
+
+      class Reservation
+        attr_reader :message
+        attr_reader :idempotence_key
+
+        def call(m, i_key, &block)
+          @message = m
+          @idempotence_key = i_key
+
+          yield message
+        end
+
+        def message?(value)
+          message == value
+        end
+
+        def idempotence_key?(value)
+          idempotence_key == value
+        end
+      end
     end
   end
 end
