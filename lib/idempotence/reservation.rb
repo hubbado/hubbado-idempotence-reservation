@@ -99,5 +99,31 @@ module Idempotence
         tags: %i[reservation ignored]
       )
     end
+
+    module Substitute
+      def self.build
+        Reservation.new
+      end
+
+      class Reservation
+        attr_reader :message
+        attr_reader :idempotence_key
+
+        def call(m, i_key, &block)
+          @message = m
+          @idempotence_key = i_key
+
+          yield message
+        end
+
+        def message?(value)
+          message == value
+        end
+
+        def idempotence_key?(value)
+          idempotence_key == value
+        end
+      end
+    end
   end
 end
