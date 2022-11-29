@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name     = "hubbado-idempotence"
-  spec.version  = "1.1.0"
+  spec.version  = "1.2.0"
   spec.authors  = ["Alfonso Uceda", "Sam Stickland"]
   spec.email    = ["alfonso@hubbado.com", "sam@hubbado.com"]
 
