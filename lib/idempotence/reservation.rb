@@ -58,7 +58,7 @@ module Idempotence
     private
 
     def reserved?(message)
-      !!message.metadata.get_property(METADATA_NAME)
+      !!message.metadata.get_local_property(METADATA_NAME)
     end
 
     def reserve_message(message, idempotence_key)
@@ -68,7 +68,7 @@ module Idempotence
       )
 
       reservation_message = message.class.follow(message)
-      reservation_message.metadata.set_property(METADATA_NAME, message.id)
+      reservation_message.metadata.set_local_property(METADATA_NAME, message.id)
       origin_stream_name = message.metadata.stream_name
 
       category = Messaging::StreamName.get_category(origin_stream_name)
