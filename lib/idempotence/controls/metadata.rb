@@ -6,7 +6,7 @@ module Idempotence
       def self.example
         metadata = Metadata::Random.example
 
-        metadata.properties[Reservation::METADATA_NAME] = :value
+        metadata.local_properties[Reservation::METADATA_NAME] = :value
 
         metadata
       end
