@@ -1,4 +1,4 @@
 require 'messaging/controls'
 
-require "idempotence/controls/message"
-require "idempotence/controls/metadata"
+require "idempotence/reservation/controls/message"
+require "idempotence/reservation/controls/metadata"

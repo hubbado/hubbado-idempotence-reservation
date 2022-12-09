@@ -1,4 +1,4 @@
-# Idempotence
+# Hubbado Idempotence Reservation
 
 Idempotence reservation stream pattern for eventide toolkit.
 
@@ -7,7 +7,7 @@ Idempotence reservation stream pattern for eventide toolkit.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'hubbado-idempotence'
+gem 'hubbado-idempotence-reservation'
 ```
 
 And then execute:
@@ -16,7 +16,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install hubbado-idempotence
+    $ gem install hubbado-idempotence-reservation
 
 ## Usage
 
@@ -46,7 +46,7 @@ E.g: Picks the message's stream name `someCategory:command-123` and the idempote
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/hubbado/idempotence.
+Bug reports and pull requests are welcome on GitHub at https://github.com/hubbado/hubbado-idempotence-reservation.
 
 ## License
 

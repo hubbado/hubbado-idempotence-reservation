@@ -5,4 +5,4 @@ require "log"
 require "configure"; Configure.activate
 require "dependency"; Dependency.activate
 
-require "idempotence/reservation"
+require "idempotence/reservation/reservation"
