@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [2.0.0 - 2022-12-09]
 ### Changed
 - Renamed gem and repo:
-  - from "idepotence" to "hubbado-idempotence-reservation"
+  - from "idempotence" to "hubbado-idempotence-reservation"
 
 ## [1.2.0 - 2022-11-29]
 ### Changed
