@@ -8,7 +8,7 @@ puts "TEST_BENCH_DETAIL: #{ENV["TEST_BENCH_DETAIL"].inspect}"
 puts
 
 require_relative "../init"
-require "idempotence/controls"
+require "idempotence/reservation/controls"
 require "debug"
 
 require "test_bench"; TestBench.activate

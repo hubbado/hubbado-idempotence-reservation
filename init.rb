@@ -1,3 +1,3 @@
 require_relative "load_path"
 
-require "idempotence"
+require "idempotence/reservation"

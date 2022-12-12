@@ -1,11 +1,11 @@
 Gem::Specification.new do |spec|
-  spec.name     = "hubbado-idempotence"
-  spec.version  = "1.2.0"
-  spec.authors  = ["Alfonso Uceda", "Sam Stickland"]
-  spec.email    = ["alfonso@hubbado.com", "sam@hubbado.com"]
+  spec.name     = "hubbado-idempotence-reservation"
+  spec.version  = "2.0.0"
+  spec.authors  = ["Alfonso Uceda", "Sam Stickland", "Alexander Repnikov"]
+  spec.email    = ["alfonso@hubbado.com", "sam@hubbado.com", "aleksander.repnikov@gmail.com"]
 
   spec.summary  = "Idempotence library to handle reservation pattern in eventide toolkit"
-  spec.homepage = "https://github.com/hubbado/idempotence"
+  spec.homepage = "https://github.com/hubbado/hubbado-idempotence-reservation"
   spec.license  = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.4.0")
 
