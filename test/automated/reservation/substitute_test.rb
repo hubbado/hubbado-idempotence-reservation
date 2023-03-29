@@ -8,9 +8,9 @@ context "Reservation" do
     idempotence_key = "Key"
 
     substitute = Reservation::Substitute.build
-    substitute.(message, idempotence_key) do |m|
+    substitute.(message, idempotence_key) do |msg|
       block_called = true
-      block_message = m
+      block_message = msg
     end
 
     test "Block is not called by default" do
