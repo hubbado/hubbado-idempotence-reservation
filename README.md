@@ -38,15 +38,18 @@ class SomeHandler
 end
 ```
 
-`reservation` callable will check if the given message is reserved with metadata `reserved` and the process the 
-block given. If metadata `reserved` does not exist then will reserve the message using a [compound ID](http://docs.eventide-project.org/glossary.html#compound-id).
+`reservation` callable will check if the given message is reserved with metadata `reserved` and
+process the block given. If metadata `reserved` does not exist then will reserve the message
+using a [compound ID](http://docs.eventide-project.org/glossary.html#compound-id).
 
-E.g: Picks the message's stream name `someCategory:command-123` and the idempotence key `AAA` so the reserved message's stream name will be
+E.g: Picks the message's stream name `someCategory:command-123` and
+the idempotence key `AAA` so the reserved message's stream name will be
 `someCategory:command-123+AAA`
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/hubbado/hubbado-idempotence-reservation.
+Bug reports and pull requests are welcome on GitHub at
+https://github.com/hubbado/hubbado-idempotence-reservation.
 
 ## License
 
