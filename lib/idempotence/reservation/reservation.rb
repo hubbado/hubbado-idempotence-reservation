@@ -108,11 +108,15 @@ module Idempotence
         attr_reader :message
         attr_reader :idempotence_key
 
-        def call(m, i_key, &block)
-          @message = m
-          @idempotence_key = i_key
+        def call(message, idempotence_key, &block)
+          @message = message
+          @idempotence_key = idempotence_key
 
-          yield message
+          yield message if @yield
+        end
+
+        def set_reserved(value)
+          @yield = value
         end
 
         def message?(value)
