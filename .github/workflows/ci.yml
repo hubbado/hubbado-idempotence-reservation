@@ -4,12 +4,10 @@ on: push
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     env:
-      ImageOS: ubuntu20
       BUNDLE_RUBYGEMS__PKG__GITHUB__COM: ${{ secrets.BUNDLE_RUBYGEMS__PKG__GITHUB__COM }}
-      BUNDLE_GITHUB__COM: ${{ secrets.BUNDLE_GITHUB__COM }}
 
     steps:
       - uses: actions/checkout@v3
