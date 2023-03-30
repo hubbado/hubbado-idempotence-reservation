@@ -107,17 +107,22 @@ module Idempotence
       class Reservation
         attr_reader :message
         attr_reader :idempotence_key
-        attr_reader :process_block
 
         def call(message, idempotence_key, &block)
           @message = message
           @idempotence_key = idempotence_key
 
-          yield message if @process_block
+          yield message if process_block
         end
 
-        def set_reserved(value)
-          @process_block = value
+        def process_block
+          @process_block ||= false
+        end
+        attr_writer :process_block
+
+        def set_reserved!
+          self.process_block = true
+          nil
         end
 
         def message?(value)

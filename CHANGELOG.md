@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Changed
+- changes Substitute method: set_reserved(value) -> set_reserved!
+
 ## [2.1.0 - 2023-03-29]
 ### Changed
 - Don't call automatically yield in the repo, just when calling
