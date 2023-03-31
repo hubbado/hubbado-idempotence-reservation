@@ -27,7 +27,7 @@ context "Reservation" do
     end
 
     context "When set reserved" do
-      substitute.set_reserved(true)
+      substitute.set_reserved
 
       substitute.(message, idempotence_key) do |m|
         block_called = true
