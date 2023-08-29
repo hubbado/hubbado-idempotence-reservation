@@ -51,7 +51,7 @@ The `reservation.()` method will do one of two things, depending on whether it f
 The first tine a command is handled it will not yet have had metadata added indicating that it has been "reserved". It will therefore skip the given block and instead write a copy of the command:
 
 - with metadata recording that the command has reserved (the metadata local property `reserved` is set to the value of the idempotence key)
-- into a stream with a compound ID consisting of the original stream name plus the `idempotence_key`. For example if the original stream name was `someCategory:command-123` and the `idemopotence_key` is `AAA` this copy will be written into `someCategory:command-123+AAA`
+- into a stream with a compound ID consisting of the original stream name plus the value of`idempotence_key`. For example if the original stream name was `someCategory:command-123` and the value of `idemopotence_key` is `AAA` this copy will be written into `someCategory:command-123+AAA`
 - using `write.initial` so that it will only ever write one copy of the command
 
 Because the command handler is processing the command "category" (e.g. `someCategory`), it will find this copy, and handling it will also pass it into the same `reservation.()` method. This time it will find the metadata recording that the command has been reserved, so the behaviour changes - instead of writing a copy of the message, the block is processed instead.

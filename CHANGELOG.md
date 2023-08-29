@@ -4,7 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [2.2.2 - 2023-08-28]
+### Chaenged
+- Better documentatiuon
+- Tested used Ruby 3.2
+
+## [2.2.1 - 2023-03-29]
 ### Changed
 - changes Substitute method: set_reserved(value) -> set_reserved
 
@@ -13,11 +18,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Don't call automatically yield in the repo, just when calling
   set_reserved(true)
 
-
 ## [2.0.0 - 2022-12-09]
 ### Changed
 - Renamed gem and repo from "idempotence" to "hubbado-idempotence-reservation"
-
 
 ## [1.2.0 - 2022-11-29]
 ### Changed
