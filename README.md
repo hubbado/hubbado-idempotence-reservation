@@ -39,7 +39,7 @@ class SomeHandler
   end
 
   handle SomeMessage do |some_message|
-    reservation.(some_message, :some_idempotence_key) do
+    reservation.(some_message, some_message.some_idempotence_key) do
       # Handle reserved message
     end
   end
@@ -82,7 +82,7 @@ We can reimplement the logic in the AccountComponent example by inlining the log
 
 ```ruby
       handle Deposit do |deposit|
-        reservation.(deposit, :deposit_id) do
+        reservation.(deposit, deposit.deposit_id) do
           account, version = store.fetch(account_id, include: :version)
 
           sequence = deposit.metadata.global_position
@@ -105,7 +105,7 @@ We can reimplement the logic in the AccountComponent example by inlining the log
       end
 
       handle Withdraw do |withdraw|
-        reservation.(withdraw, :withdrawal_id) do
+        reservation.(withdraw, withdraw.withdrawal_id) do
           account_id = withdraw.account_id
 
           account, version = store.fetch(account_id, include: :version)
@@ -160,9 +160,11 @@ Or install it yourself as:
 
 ## Usage
 
-Use it inside a handler
+Use it inside a handler:
 
 ```ruby
+require 'idempotence/reservation'
+
 class SomeHandler
   dependency :reservation, Idempotence::Reservation
 
@@ -171,10 +173,33 @@ class SomeHandler
   end
 
   handle SomeMessage do |some_message|
-    reservation.(some_message, :some_idempotence_key) do
+    reservation.(some_message, some_message.some_idempotence_key) do
       # Handle reserved message
     end
   end
+end
+```
+
+## Testing
+
+The substitute will not run the block passed to `reservation.()` unless `set_reserved` has been called first.
+
+```ruby
+handler = SomeHandler.new
+handler.set_reserved
+```
+
+The substitute provides two methods for checking that command reservation was used.
+
+```ruby
+handler = SomeHandler.new
+
+some_command = SomeCommand.new
+handler.(some_command)
+
+test "Command reservation was used" do
+  assert handler.reservation.message?(some_command)
+  assert handler.reservation.idempotence_key?(some_command.some_idempotence_key)
 end
 ```
 
