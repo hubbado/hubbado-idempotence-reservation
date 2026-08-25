@@ -1,3 +1,3 @@
 require_relative "./test_init"
 
-TestBench::Run.('test/automated')
+TestBench::Run.('test/automated') or exit(false)
