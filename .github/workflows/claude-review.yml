@@ -1,0 +1,26 @@
+name: Claude Review
+
+on:
+  pull_request:
+    types: [opened, ready_for_review]
+  issue_comment:
+    types: [created]
+
+jobs:
+  review:
+    if: >-
+      (github.event_name == 'pull_request' && !github.event.pull_request.draft) ||
+      (github.event.issue.pull_request && startsWith(github.event.comment.body, '@claude review'))
+    # One review at a time per PR, so that each follow-up sees the findings of the review before it.
+    # Job-level, so that ordinary comments, which skip this job, cannot cancel a waiting review.
+    concurrency:
+      group: claude-review-${{ github.event.pull_request.number || github.event.issue.number }}
+    uses: hubbado/workflows/.github/workflows/component-claude-review.yml@main
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+
+    secrets:
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
